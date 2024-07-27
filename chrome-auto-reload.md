@@ -1,0 +1,55 @@
+
+
+
+# Sublime Build System
+
+Custom build system can be created for Sublime Text by saving a `*.sublime-build` file here
+
+~/Library/Application Support/Sublime Text 3/Packages/User
+
+Create one called `Markdown to HTML.sublime-build`
+```json
+{
+	"shell_cmd": "pandoc --standalone --template template.html -f gfm $file -o $file.html",
+	"working_dir": "$file_path",
+	"file_patterns": ["*.md"]
+}
+```
+
+# Set Up Chrome to Auto Reload
+
+```sh
+ARRAY_OF_FILES=( X****.md Y****.md ... )
+nohup ./chrome-refresh.sh ${ARRAY_OF_FILES} >> .tmp-chrome-refresh.out 2>&1 &
+```
+
+where the contents are
+
+> chrome-refresh.sh
+```sh
+#!/usr/bin/env bash
+set -e
+
+echo "watching $@"
+
+if ! type fswatch > /dev/null; then
+  brew install fswatch
+else
+  fswatch --version | head -n1
+fi
+
+function chrome_reload () {
+  printf "  reloading chrome\n"
+  osascript -e 'tell application "Google Chrome" to tell the active tab of its first window to reload'
+}
+export -f chrome_reload
+
+function on_watch() {
+  printf "  on_watch $1\n"
+  chrome_reload
+}
+export -f on_watch
+
+fswatch -l 0.3 -0 "$@" | xargs -0 -n1 -I{} bash -c '$(on_watch "{}")'
+#  printf "  modified: {}\n" && $(on_watch)
+```

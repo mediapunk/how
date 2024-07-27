@@ -1,0 +1,117 @@
+
+:root {
+    --pink-dark: rgb(239, 12, 167);
+    --code-text-bold: rgb(20, 100, 20, 0.95);;
+    --crt-text-dim: rgb(40, 90, 50, 0.6);
+    --crt-text-bold: rgb(20, 100, 20, 0.95);
+    --crt-screen-dark: rgba(0, 20, 2, 0.1);
+    --crt-screen-light: rgba(180, 200, 180, 0.05);
+    --pinkish: rgba(240, 0, 0, 0.2);
+}
+
+    blockquote {
+/*      margin: 1em 0 1em 1.7em;*/
+/*      padding-left: 1em;*/
+/*      border: 0px solid #000;*/
+    }
+
+    blockquote:not(:has(pre)) {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+/*      color: var(--pink-dark);*/
+      font-style: italic;
+    }
+
+    blockquote:has(pre) {
+      margin: 0;
+/*      1em 0 1em 1.7em;*/
+/*      padding: 1em;*/
+/*      revert;*/
+/*       1em;*/
+/*      color: var(--pink-dark);*/
+      font-style: normal;
+      background-color: var(--crt-screen-light);
+/*      border: 2px solid var(--crt-text-dark);*/
+      border-radius: 0em;
+/*      border-top-left-radius: 0em;*/
+/*      border-top-right-radius: 0em;*/
+      border-bottom-left-radius: 0.5em;
+/*      border-bottom-left-radius: 0.5em;*/
+/*      color: var(--crt-text-bright);*/
+      padding: 0;
+      padding-bottom: 0.2em;
+      margin-left: 1.4em;
+      border-left: 0.15em solid var(--crt-screen-dark);
+      border-bottom: 0.15em solid var(--crt-screen-dark);
+    }
+
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 82%;
+      margin: 0;
+      hyphens: manual;
+      font-style: normal;
+      color: var(--code-text-bold);
+    }
+
+    pre {
+/*      margin: 1em 0;*/
+      overflow: auto;
+/*      background-color: var(--crt-dark);*/
+/*      padding-left: 2em;*/
+/*      margin-left: 0em;*/
+/*      background-color: var(--pinkish);*/
+      padding-left: 2em;
+
+      
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+      margin-bottom: 0;
+      padding-bottom: 0;
+
+    }
+
+    code {
+/*      color: var(--pink-dark);*/
+      padding-bottom: 0;
+      padding-left: 0.2em;
+      padding-right: 0.2em;
+      letter-spacing: -.03em;
+    }
+
+    pre {
+      padding: 1em;
+      margin-bottom: 0;
+      code {
+        color: var(--crt-text-bold);
+        letter-spacing: revert;
+      }
+/*      border: 1px dotted yellow;*/
+      border-radius: 0.5em;
+/*      border-top-right-radius: 0em;*/
+      border-bottom-right-radius: 0em;
+      background-color: var(--crt-screen-dark);
+      margin-left: 1em;
+    }
+
+    blockquote pre {
+      padding-left: 1.5em;
+      margin-top: 0;
+      code {
+        color: var(--crt-text-dim);
+        letter-spacing: revert;
+      }
+      border: revert;
+      background-color: revert;
+    }
+
+    
+
+
+
+
+
