@@ -4,7 +4,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "render document",
+            "label": "render markdown",
             "type": "shell",
             "command": "pandoc",
             "args": [
@@ -13,9 +13,9 @@
                 "${workspaceFolder}/templates/template.html",
                 "-f",
                 "gfm",
-                "${workspaceFolder}/content/test.md",
+                "${file}",
                 "-o",
-                "${workspaceFolder}/content/test.md.html"
+                "${file}.html"
             ],
             "problemMatcher": {
                 "owner": "python",

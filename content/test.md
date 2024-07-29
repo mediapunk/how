@@ -2,8 +2,7 @@
 title: MPNK How
 date: July 28, 2024
 headline: "CSS Test"
-css-path: ./css
-css-custom: custom-html-style.css
+css-path: ./css/custom.css
 ---
 
 

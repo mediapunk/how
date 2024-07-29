@@ -1,3 +1,4 @@
 *.md.html
 content/**/*.html
 **/.DS_Store
+**/.tmp-*

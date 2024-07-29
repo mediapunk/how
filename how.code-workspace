@@ -7,29 +7,25 @@
 	"settings": {
 		"files.exclude": {
 			"**/._*": true,
-			//"**/.*": true, 
-			//"**/*.sh": true,
-			//"**/*.py": true,
-			
-			"users/**/*.html": false, 
-			"users/kbam/o*": true,
-			"users/kbam/p*": true,      
+			"**/*.md.html": true, 
+			"**/.tmp*": true,    
 		},
 
         // Extension: Task On Save
 		"triggerTaskOnSave.on": true,
 		"triggerTaskOnSave.tasks": {
-			"checkyaml": [
-				"**/*.yaml",
-			],
-			"render document": [
-				"**/*.html",
-				"**/*.css",
-				"**/*.yaml",
+			// "checkyaml": [
+			// 	"**/*.yaml",
+			// ],
+			"render markdown": [
+				"**/*.md",
+				//"**/*.html",
+				//"**/*.css",
+				//
 			],
 		},
 		"less.compile": {
-			"main": "custom-html-style.less"
+			"main": "custom.less"
 		},
 
 	},	
