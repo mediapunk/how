@@ -1,0 +1,36 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/._*": true,
+			//"**/.*": true, 
+			//"**/*.sh": true,
+			//"**/*.py": true,
+			
+			"users/**/*.html": false, 
+			"users/kbam/o*": true,
+			"users/kbam/p*": true,      
+		},
+
+        // Extension: Task On Save
+		"triggerTaskOnSave.on": true,
+		"triggerTaskOnSave.tasks": {
+			"checkyaml": [
+				"**/*.yaml",
+			],
+			"render document": [
+				"**/*.html",
+				"**/*.css",
+				"**/*.yaml",
+			],
+		},
+		"less.compile": {
+			"main": "custom-html-style.less"
+		},
+
+	},	
+}

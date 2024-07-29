@@ -1,0 +1,59 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "render document",
+            "type": "shell",
+            "command": "pandoc",
+            "args": [
+                "--standalone",
+                "--template",
+                "${workspaceFolder}/templates/template.html",
+                "-f",
+                "gfm",
+                "${workspaceFolder}/content/test.md",
+                "-o",
+                "${workspaceFolder}/content/test.md.html"
+            ],
+            "problemMatcher": {
+                "owner": "python",
+                "fileLocation": "autoDetect",
+                "pattern": [
+                    {
+                        "file": 1,
+                        "line": 2,
+                        "message": 3,
+                        "regexp": "^.*File \\\"(.+)\\\", line (\\d+), (.*)$"
+                    }
+                ]
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        },
+        {
+            "label": "checkyaml",
+            "type": "shell",
+            "command": "cat '${relativeFile}' | yq >/dev/null",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
+            }
+        }
+    ]
+}

@@ -1,25 +1,32 @@
-
+---
+title: MPNK How
+date: July 27, 2024
+headline: "Build and Reload"
+css-path: ./css
+css-pandoc: pandoc-html-style.css
+css-custom: custom-html-style.css
+---
 
 
 # Sublime Build System
 
 Custom build system can be created for Sublime Text by saving a `*.sublime-build` file here
 
-~/Library/Application Support/Sublime Text 3/Packages/User
+`~/Library/Application Support/Sublime Text[ 3]/Packages/User`
 
 Create one called `Markdown to HTML.sublime-build`
 ```json
 {
-	"shell_cmd": "pandoc --standalone --template template.html -f gfm $file -o $file.html",
-	"working_dir": "$file_path",
-	"file_patterns": ["*.md"]
+  "shell_cmd": "pandoc --standalone --template templates/template.html -f gfm $file -o $file.html",
+  "working_dir": "$folder",
+  "file_patterns": ["*.md"]
 }
 ```
 
 # Set Up Chrome to Auto Reload
 
 ```sh
-ARRAY_OF_FILES=( X****.md Y****.md ... )
+ARRAY_OF_FILES=( content/*.html content/css/*.css template.html ... )
 nohup ./chrome-refresh.sh ${ARRAY_OF_FILES} >> .tmp-chrome-refresh.out 2>&1 &
 ```
 

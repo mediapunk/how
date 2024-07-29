@@ -1,0 +1,58 @@
+@import "normalize.css";
+@import "reset.less";
+@import "colors.less";
+
+
+@hr-height: 0.06rem;
+
+#borderLineAtBottom {
+    border: none;
+    border-bottom: @hr-height solid @pandoc-black;
+    border-color:  @pandoc-black;
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
+}
+ 
+hr {
+    #borderLineAtBottom;
+}
+
+
+html {
+    color: @pandoc-black;
+    background-color: @pandoc-white;
+}
+
+body {
+    margin: 0 auto;
+    padding: 3em;
+    max-width: 60em;
+    hyphens: auto;
+    overflow-wrap: break-word;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+}
+
+p {
+    margin: 1em 0;
+}
+
+blockquote {
+    margin: 1em 0 1em 1.7em;
+    padding-left: 1em;
+    border-left: 2px solid @pandoc-ghost;
+    color: @pandoc-gray;
+}
+
+header {
+    #borderLineAtBottom;
+    margin-bottom: 1em;
+    text-align: left;
+}
+
+@import "lists.less"; 
+@import "precode.less"; 
+
+blockquote {
+    background-color: @pinkish;
+}
