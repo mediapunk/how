@@ -1,5 +1,5 @@
 @import "normalize.css";
-@import "reset.less";
+@import "reset.css";
 @import "colors.less";
 
 
@@ -9,8 +9,9 @@
     border: none;
     border-bottom: @hr-height solid @pandoc-black;
     border-color:  @pandoc-black;
-    padding-bottom: 0.5em;
-    margin-bottom: 1em;
+    padding-bottom: 0.24em;
+    margin-bottom: 0.38em;
+    // margin-bottom: 0.5em;
 }
  
 hr {
@@ -33,26 +34,55 @@ body {
     font-kerning: normal;
 }
 
+#marginAtEnd {
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+
+    // &:last-child {
+	// 	margin-bottom: revert;
+	// }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 0.5em;
+    // margin-bottom: 0.5em;
+}
+
 p {
-    margin: 1em 0;
+    #marginAtEnd();
 }
 
 blockquote {
-    margin: 1em 0 1em 1.7em;
+    #marginAtEnd();
     padding-left: 1em;
     border-left: 2px solid @pandoc-ghost;
     color: @pandoc-gray;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
+// blockquote p {
+//    margin-bottom: 0;
+// }
+
 header {
+    h1 {
     #borderLineAtBottom;
+    }
+    p {
+        font-style: italic;
+    }
     margin-bottom: 1em;
     text-align: left;
 }
 
-@import "lists.less"; 
+@import "lists.css"; 
 @import "precode.less"; 
 
-blockquote {
-    background-color: @pinkish;
-}
+@debug-pink: rgba(255, 65, 128, 0.181);
+@debug-blue: rgba(65, 192, 255, 0.239);
+@debug-yellow: rgba(255, 242, 65, 0.357);
+
+
+
+

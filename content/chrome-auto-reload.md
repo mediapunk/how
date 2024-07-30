@@ -26,7 +26,13 @@ Create one called `Markdown to HTML.sublime-build`
 # Set Up Chrome to Auto Reload
 
 ```sh
-ARRAY_OF_FILES=( content/*.html content/css/*.css template.html ... )
+ARRAY_OF_FILES=( content/*.md.html content/css/*.*ss ... )
+./chrome-refresh.sh ${ARRAY_OF_FILES}
+```
+
+Run the command in the background
+
+```
 nohup ./chrome-refresh.sh ${ARRAY_OF_FILES} >> .tmp-chrome-refresh.out 2>&1 &
 ```
 

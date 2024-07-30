@@ -2,9 +2,7 @@
 title: MPNK How
 date: July 27, 2024
 headline: "SSH Warning: Remote Host Identification Has Changed"
-css-path: ./css
-css-pandoc: pandoc-html-style.css
-css-custom: custom-html-style.css
+css-path: ./css/custom.css
 ---
 
 - macOS 14.5

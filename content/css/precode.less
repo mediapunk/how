@@ -1,35 +1,62 @@
 @import "colors.less";
 
+#debug() {
+    background-color: @pinkish;
+}
+
+#visibleBox {
+    padding: 0.38em 0; // 0;
+    padding-left: 0.62em;
+    border-left: .15em solid @pandoc-ghost;
+
+    p:first-child { margin-top: 0; }
+    p:last-child { margin-bottom: 0; }
+}
+
+#indented {
+    margin-left: 1em;
+}
+
 blockquote:not(:has(pre)) {
-    margin: 1em 0 1em 1.7em;
-    padding-left: 1em;
-    border-left: 2px solid #e6e6e6;
+    // margin: 1em 0 1em 1.7em;
+    #visibleBox();
+    #indented();
+    // border-left: 2px solid @pandoc-ghost;
     font-style: italic;
 }
 
 blockquote:has(pre) {
-    margin: 0;
+
     font-style: normal;
     background-image: linear-gradient(to right, @crt-screen-light 10%, transparent 40%);
-    padding: 0;
-    padding-bottom: 0.2em;
-    margin-left: calc(1.0em + 2 * var(--round));
-    border-left: 0.15em solid @crt-screen-dark;
+
+    #visibleBox();
+    #indented();
+    padding-left: revert;
+   border-color: @crt-screen-dark;
 }
-
-
 
 code {
     color: @code-text-bold;
     font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-    font-size: 85%;
+    font-size: 82%;
     font-style: normal;
     hyphens: manual;
     margin: 0;
-    white-space: pre-wrap;
+    overflow-wrap: break-word;
     padding-left: 0.2em;
     padding-right: 0.2em;
     letter-spacing: -.03em;
+}
+
+
+pre.file {
+    #debug();
+    border-radius: 0.2em;
+    border-top-right-radius: 1.5em;
+    margin-left: 2em;
+    margin-right: 2em;
+    border: none;
 }
 
 /*
@@ -37,30 +64,26 @@ Two kinds of pre that we care about: inside a block quote and not inside a block
     This section is to cover the sytle that is common to both
     */
 
+@visible-padding: 0.62em;
+
 pre {
-    margin: 0.5em 0;
-    margin-bottom: 0;
-    overflow: auto;
-    padding-left: 0.5em;
-    padding: 0.5em;
+    white-space: pre-wrap;
+
+    #visibleBox();
+    padding-left: @visible-padding;
     
     code {
         color: @crt-text-bold;
         letter-spacing: revert;
-        padding: 0em;
-        overflow: visible;
-        overflow-wrap: normal;
+        padding: revert; // 0em;
         margin-bottom: 0;
-        padding-bottom: 0;
     }
 
-    border-radius: var(--round);
     background-color: @crt-screen-dark;
 }
 
 blockquote pre {
-    padding-left: 1.0em;
-    margin-top: 0;
+    padding-left: @visible-padding;
 
     code {
         color: @crt-text-dim;
@@ -68,4 +91,10 @@ blockquote pre {
 
     border: revert;
     background-color: revert;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+pre + blockquote:has(pre) {
+    margin-top: 0; // remove top margin if it follows a pre
 }

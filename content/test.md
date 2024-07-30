@@ -6,21 +6,6 @@ css-path: ./css/custom.css
 ---
 
 
-### The `<h2>` Section: Fonts
-
----
-
-Qwerty `Qwerty` *Qwerty*
-
----
-
-> Qwerty `Qwerty` 
-
----
-
-    Qwerty
-
----
 
 ### The `<h3>` Section: Lists
 
@@ -28,10 +13,6 @@ Qwerty `Qwerty` *Qwerty*
 - Block Quotes
 - Code
 
----
-
-- [x] Checked
-- [ ] Unchecked 
 
 
 #### The `<h4>` Section
@@ -42,9 +23,14 @@ This section header uses the `<h4>` element
 > The only reason for time is so that everything doesn't happen at once.
 > —Albert Einstein
 
+---
+
 > Why can't I just eat my waffle?
 >  —Barack Obama
 
+### Backticks to Create Type
+
+Using backticks and a string ```` ```x ```` to create a `<pre class="x">` element. Here we make a ```` ```file ```` type.
 
 Create a file called `requirements.txt` with this content:
 
@@ -53,6 +39,7 @@ Create a file called `requirements.txt` with this content:
 jinja2 == 3.1.4
 scons == 7.1
 ```
+
 
 Today I logged in to an older machine, and tried to clone one of my repos from GitHub.
 I got an unusual warning message about the fingerprint that helps identify the host.

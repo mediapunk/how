@@ -1,101 +1,19 @@
 @import "normalize.css";
-* {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  /* font-size: 100%; */
-  font-family: inherit;
-  vertical-align: baseline;
-}
-/* Box sizing rules */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-/* Prevent font size inflation */
-html {
-  -moz-text-size-adjust: none;
-  -webkit-text-size-adjust: none;
-  text-size-adjust: none;
-}
-/* Remove default margin in favour of better control in authored CSS */
-* {
-  margin-block-end: 0;
-}
-/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-ul[role='list'],
-ol[role='list'] {
-  list-style: inherit;
-}
-/* Set core body defaults */
-body {
-  min-height: 100vh;
-  line-height: 1.15;
-  -webkit-font-smoothing: antialiased;
-}
-/* Set shorter line heights on headings and interactive elements */
-h1,
-h2,
-h3,
-h4,
-button,
-input,
-label {
-  line-height: inherit;
-}
-/* Balance text wrapping on headings */
-h1,
-h2,
-h3,
-h4 {
-  text-wrap: balance;
-}
-/*
-  7. Avoid text overflows
-*/
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
-  font-size: revert;
-}
-/* A elements that don't have a class get default styles */
-/* Make images easier to work with */
-img,
-picture,
-video,
-canvas,
-svg {
-  max-width: 100%;
-  display: block;
-}
-/* Inherit fonts for inputs and buttons */
-input,
-button,
-textarea,
-select {
-  font: inherit;
-  font-family: inherit;
-  font-size: inherit;
-}
+@import "reset.css";
+@import "lists.css";
 #borderLineAtBottom {
   border: none;
   border-bottom: 0.06rem solid #1a1a1a;
   border-color: #1a1a1a;
-  padding-bottom: 0.5em;
-  margin-bottom: 1em;
+  padding-bottom: 0.24em;
+  margin-bottom: 0.38em;
 }
 hr {
   border: none;
   border-bottom: 0.06rem solid #1a1a1a;
   border-color: #1a1a1a;
-  padding-bottom: 0.5em;
-  margin-bottom: 1em;
+  padding-bottom: 0.24em;
+  margin-bottom: 0.38em;
 }
 html {
   color: #1a1a1a;
@@ -110,103 +28,141 @@ body {
   text-rendering: optimizeLegibility;
   font-kerning: normal;
 }
+#marginAtEnd {
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0.5em;
+}
 p {
-  margin: 1em 0;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
 }
 blockquote {
-  margin: 1em 0 1em 1.7em;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
   padding-left: 1em;
   border-left: 2px solid #e6e6e6;
   color: #606060;
+  margin-top: 1em;
+  margin-bottom: 1em;
 }
 header {
-  border: none;
-  border-bottom: 0.06rem solid #1a1a1a;
-  border-color: #1a1a1a;
-  padding-bottom: 0.5em;
   margin-bottom: 1em;
   text-align: left;
 }
-ul.task-list[class] {
-  list-style: none;
+header h1 {
+  border: none;
+  border-bottom: 0.06rem solid #1a1a1a;
+  border-color: #1a1a1a;
+  padding-bottom: 0.24em;
+  margin-bottom: 0.38em;
 }
-ul.task-list li input[type="checkbox"] {
-  font-size: inherit;
-  width: 0.8em;
-  margin: 0em 0.5em 0.2em 0em;
-  vertical-align: middle;
-}
-ol,
-ul {
-  padding-left: 1em;
-  margin-top: 0.4em;
-  margin-bottom: 1em;
-}
-li > ol,
-li > ul {
-  margin-top: 0;
-}
-li > p {
-  margin: inherit;
-}
-blockquote:not(:has(pre)) {
-  margin: 1em 0 1em 1.7em;
-  padding-left: 1em;
-  border-left: 2px solid #e6e6e6;
+header p {
   font-style: italic;
 }
+#visibleBox {
+  padding: 0.38em 0;
+  padding-left: 0.62em;
+  border-left: 0.15em solid #e6e6e6;
+}
+#visibleBox p:first-child {
+  margin-top: 0;
+}
+#visibleBox p:last-child {
+  margin-bottom: 0;
+}
+#indented {
+  margin-left: 1em;
+}
+blockquote:not(:has(pre)) {
+  padding: 0.38em 0;
+  padding-left: 0.62em;
+  border-left: 0.15em solid #e6e6e6;
+  margin-left: 1em;
+  font-style: italic;
+}
+blockquote:not(:has(pre)) p:first-child {
+  margin-top: 0;
+}
+blockquote:not(:has(pre)) p:last-child {
+  margin-bottom: 0;
+}
 blockquote:has(pre) {
-  margin: 0;
   font-style: normal;
   background-image: linear-gradient(to right, rgba(190, 200, 190, 0.2) 10%, transparent 40%);
-  padding: 0;
-  padding-bottom: 0.2em;
-  margin-left: calc(1em + 2 * var(--round));
-  border-left: 0.15em solid rgba(0, 20, 2, 0.1);
+  padding: 0.38em 0;
+  padding-left: 0.62em;
+  border-left: 0.15em solid #e6e6e6;
+  margin-left: 1em;
+  padding-left: revert;
+  border-color: rgba(36, 63, 58, 0.167);
+}
+blockquote:has(pre) p:first-child {
+  margin-top: 0;
+}
+blockquote:has(pre) p:last-child {
+  margin-bottom: 0;
 }
 code {
   color: #146414;
   font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-  font-size: 85%;
+  font-size: 82%;
   font-style: normal;
   hyphens: manual;
   margin: 0;
-  white-space: pre-wrap;
+  overflow-wrap: break-word;
   padding-left: 0.2em;
   padding-right: 0.2em;
   letter-spacing: -0.03em;
+}
+pre.file {
+  background-color: rgba(240, 0, 0, 0.2);
+  border-radius: 0.2em;
+  border-top-right-radius: 1.5em;
+  margin-left: 2em;
+  margin-right: 2em;
+  border: none;
 }
 /*
 Two kinds of pre that we care about: inside a block quote and not inside a blockquote.
     This section is to cover the sytle that is common to both
     */
 pre {
-  margin: 0.5em 0;
+  white-space: pre-wrap;
+  padding: 0.38em 0;
+  border-left: 0.15em solid #e6e6e6;
+  padding-left: 0.62em;
+  background-color: rgba(36, 63, 58, 0.167);
+}
+pre p:first-child {
+  margin-top: 0;
+}
+pre p:last-child {
   margin-bottom: 0;
-  overflow: auto;
-  padding-left: 0.5em;
-  padding: 0.5em;
-  border-radius: var(--round);
-  background-color: rgba(0, 20, 2, 0.1);
 }
 pre code {
-  color: #146414;
+  color: rgba(14, 90, 90, 0.95);
   letter-spacing: revert;
-  padding: 0em;
-  overflow: visible;
-  overflow-wrap: normal;
+  padding: revert;
   margin-bottom: 0;
-  padding-bottom: 0;
 }
 blockquote pre {
-  padding-left: 1em;
-  margin-top: 0;
+  padding-left: 0.62em;
   border: revert;
   background-color: revert;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 blockquote pre code {
-  color: #285a32;
+  color: rgba(14, 90, 90, 0.55);
 }
-blockquote {
-  background-color: rgba(240, 0, 0, 0.2);
+pre + blockquote:has(pre) {
+  margin-top: 0;
 }
