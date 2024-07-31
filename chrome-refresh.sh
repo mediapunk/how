@@ -23,5 +23,5 @@ function on_watch() {
 }
 export -f on_watch
 
-fswatch -l 0.5 -0 "$@" | xargs -0 -n1 -I{} bash -c '$(echo on_watch "{}")'
+fswatch -l 0.2 -0 "$@" | xargs -0 -n1 -I{} bash -c '$(echo on_watch "{}")'
 #  printf "  modified: {}\n" && $(on_watch)

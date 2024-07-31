@@ -4,18 +4,40 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "is markdown?",
+            "type": "shell",
+            "command": "./check-ext.sh .md '${file}'",
+            "presentation": {
+                "echo": false,
+                "revealProblems": "onProblem",
+                "panel": "shared",
+                "showReuseMessage": false,
+            },
+            "problemMatcher": {
+                "owner": "preflight-checks",
+                "fileLocation": "autoDetect",
+                "pattern": [
+                    {
+                        "kind": "file", // handles whole-file errors, not line errors
+                        "regexp": "^\\[(.*)\\]\\s*error: (.*)$",
+                        "file": 1,
+                        "message": 2,
+                    }
+                ]
+            }
+
+        },
+        {
             "label": "render markdown",
             "type": "shell",
+            "dependsOn": "is markdown?",
             "command": "pandoc",
             "args": [
                 "--standalone",
-                "--template",
-                "${workspaceFolder}/templates/template.html",
-                "-f",
-                "gfm",
+                "--template", "${workspaceFolder}/templates/template.html",
+                "-f", "gfm",
                 "${file}",
-                "-o",
-                "${file}.html"
+                "-o", "${file}.html"
             ],
             "problemMatcher": {
                 "owner": "python",
@@ -40,7 +62,7 @@
                 "panel": "shared",
                 "showReuseMessage": false,
                 "clear": true
-            }
+            },
         },
         {
             "label": "checkyaml",
