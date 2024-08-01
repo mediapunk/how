@@ -2,3 +2,5 @@
 content/**/*.html
 **/.DS_Store
 **/.tmp-*
+_site/
+_tmp/

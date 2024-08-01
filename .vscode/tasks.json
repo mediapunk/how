@@ -31,13 +31,10 @@
             "label": "render markdown",
             "type": "shell",
             "dependsOn": "is markdown?",
-            "command": "pandoc",
+            "command": "./build-page.sh",
             "args": [
-                "--standalone",
-                "--template", "${workspaceFolder}/templates/template.html",
-                "-f", "gfm",
-                "${file}",
-                "-o", "${file}.html"
+                "_tmp",
+                "${relativeFile}",
             ],
             "problemMatcher": {
                 "owner": "python",

@@ -39,12 +39,16 @@ jobs:
 
       - run: pandoc --version
 
-      - run: ./build-all.sh
+      - run: |
+        ./build-all.sh
+        mv _tmp/content _site
+        mkdir -p _site/css
+        cp content/*.css _site/css/
           
       - uses: actions/upload-artifact@master
         with:
           name: site-package
-          path: content
+          path: _site
           if-no-files-found: error
 
   # Deployment job
@@ -58,7 +62,7 @@ jobs:
     - uses: actions/download-artifact@master
       with:
         name: site-package
-        path: ./content
+        path: ./_site
     
     - uses: actions/configure-pages@v5
     

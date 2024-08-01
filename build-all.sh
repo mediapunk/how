@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 shopt -s nullglob # empty array of the following glob returns nothing
-arr=(./content/*.md)
 
-for f in "${arr[@]}"; do
-   ./build-page.sh "$f"
+FILES=(./content/*.md)
+
+for FILE in "${FILES[@]}"; do
+   ./build-page.sh _tmp "$FILE"
 done
