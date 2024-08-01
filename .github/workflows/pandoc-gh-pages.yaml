@@ -33,18 +33,13 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Install Pandoc
-        uses: pandoc/actions/setup@{main}
+      - uses: r-lib/actions/setup-pandoc@v2
         with:
-          version: 2.19
+          pandoc-version: '3.2.1' # The pandoc version to download (if necessary) and use.
 
-      - name: Run Pandoc
-        run: pandoc --version
+      - run: pandoc --version
 
-      - name: create file list
-        id: files_list
-        run: |
-          ./build-all.sh
+      - run: ./build-all.sh
           
       - uses: actions/upload-artifact@master
         with:
