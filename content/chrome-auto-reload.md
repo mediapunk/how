@@ -27,6 +27,7 @@ Create one called `Markdown to HTML.sublime-build`
 
 ```sh
 ARRAY_OF_FILES=( content/*.md.html content/css/*.*ss ... )
+ARRAY_OF_FILES=( _tmp/content/* )
 ./chrome-refresh.sh ${ARRAY_OF_FILES}
 ```
 
