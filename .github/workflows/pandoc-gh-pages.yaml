@@ -7,6 +7,10 @@ on:
   push:
     branches:
       - main  # Runs on pushes targeting the default branch
+    paths:
+      - 'content/**.md'
+      - 'content/**.css'
+      - 'templates/**'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
