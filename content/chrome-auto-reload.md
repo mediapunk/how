@@ -2,9 +2,7 @@
 title: MPNK How
 date: July 27, 2024
 headline: "Build and Reload"
-css-path: ./css
-css-pandoc: pandoc-html-style.css
-css-custom: custom-html-style.css
+css-path: css/custom.css
 ---
 
 
@@ -28,10 +26,11 @@ Create one called `Markdown to HTML.sublime-build`
 ```sh
 ARRAY_OF_FILES=( content/*.md.html content/css/*.*ss ... )
 ARRAY_OF_FILES=( _tmp/content/* )
+
 ./chrome-refresh.sh ${ARRAY_OF_FILES}
 ```
 
-Run the command in the background
+Or try running the command in the background
 
 ```
 nohup ./chrome-refresh.sh ${ARRAY_OF_FILES} >> .tmp-chrome-refresh.out 2>&1 &
@@ -39,8 +38,8 @@ nohup ./chrome-refresh.sh ${ARRAY_OF_FILES} >> .tmp-chrome-refresh.out 2>&1 &
 
 where the contents are
 
-> chrome-refresh.sh
-```sh
+- [ ] `chrome-refresh.sh`
+```file
 #!/usr/bin/env bash
 set -e
 

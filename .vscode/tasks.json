@@ -25,7 +25,6 @@
                     }
                 ]
             }
-
         },
         {
             "label": "render markdown",
@@ -33,9 +32,13 @@
             "dependsOn": "is markdown?",
             "command": "./build-page.sh",
             "args": [
-                "_tmp",
-                "${relativeFile}",
+                "_site",
+                "content",
+                "${relativeFile}"
             ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
             "problemMatcher": {
                 "owner": "python",
                 "fileLocation": "autoDetect",
@@ -59,16 +62,15 @@
                 "panel": "shared",
                 "showReuseMessage": false,
                 "clear": true
-            },
+            }
         },
         {
             "label": "run shell script",
             "type": "shell",
             "command": "./check-ext.sh .sh '${relativeFile}' && './${relativeFile}'",
-            "args": [
-            ],
+            "args": [],
             "group": {
-                "kind": "build",
+                "kind": "build"
             },
             "presentation": {
                 "echo": true,
@@ -77,7 +79,7 @@
                 "panel": "shared",
                 "showReuseMessage": false,
                 "clear": true
-            },
+            }
         },
         {
             "label": "checkyaml",

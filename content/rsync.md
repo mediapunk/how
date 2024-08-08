@@ -1,11 +1,12 @@
 ---
-title: MPNK How
+title: Notes on Rsync
 date: Aug 2, 2024
-headline: Notes on Rsync
 css-path: css/custom.css
 ---
 
 nmap -p 20 192.168.54.22
+
+`rsync`[^rsync]
 
 Only copy over *.h files, skipping any excluded directories
 Read the includes/excludes from right to left
@@ -63,6 +64,8 @@ Copy every *.sh file, and leave its directory heirarchy intact:
 
 
 ## Useful Flags
+
+Looking at the help for rsync[^man], I find these useful flags:
 
 #### Archive Mode
 >     -a    archive mode; same as -rlptgoD (no -H)
@@ -122,3 +125,9 @@ a trailing "dir_name/***" will match both the directory (as if
 >        --max-size=SIZE        don't transfer any file larger than SIZE
 
     rsync -vam --include="**/*.md" --exclude="**/*.*" hubu:titan/ .
+
+
+
+[^man]: `man rsync` (macOS 14.5 Sonoma)
+[^rsync]: rsync, version 2.6.9, protocol version 29, http://rsync.samba.org
+
