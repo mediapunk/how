@@ -5,7 +5,7 @@ rules:
   document-start: disable
   braces: { max-spaces-inside: 2 }
   line-length: { max: 160, level: warning }
-  commas: { max-spaces-before: 1, max-spaces-after: 2 }
-  colons: { max-spaces-before: 1, max-spaces-after: 2 }
+  commas: { max-spaces-before: 1, max-spaces-after: 7 }
+  colons: { max-spaces-before: 1, max-spaces-after: 7 }
   comments-indentation: disable
   indentation: { level: warning }

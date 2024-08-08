@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-#yamllint "$1"
+yamllint "$1"
