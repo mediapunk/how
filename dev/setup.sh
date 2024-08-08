@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+pandoc --version || brew install pandoc
+
 yq --version || brew install yq
 yamllint --version || brew install yamllint
 
