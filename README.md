@@ -3,7 +3,7 @@ _A Static Website Built from Markdown Content_
 
 ## Build
 
-Markdown content in the `content/` [file:///./content/] directory is converted to HTML via scripts:
+Markdown content in the `content/` directory is converted to HTML via scripts:
 
 - `build-all.sh`
 - `build-page.sh`

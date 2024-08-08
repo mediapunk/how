@@ -6,7 +6,8 @@
 		"files.exclude": {
 			"**/._*": true,
 			"**/*.md.html": true, 
-			"**/.tmp*": true,    
+			"**/.tmp*": true,
+			"**.html": true, 
 		},
 
         // Extension: Task On Save
