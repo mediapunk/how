@@ -79,7 +79,10 @@ Looking at the help for rsync[^man], I find these useful flags:
 >     -D    preserve device files (super-user only) and special files
 
 #### Prune Empty Directories
->     -m    prune e(m)pty directory chains from file-list
+>      -m                prune e(m)pty directory chains from file-list
+>     --delete-during    receiver deletes during xfer, not before
+>     --del              an alias for --delete-during
+
 
 #### Include or Exclude Files
 >        --exclude=PATTERN      exclude files matching PATTERN

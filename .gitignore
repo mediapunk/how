@@ -4,3 +4,5 @@ content/**/*.html
 **/.tmp-*
 _site/
 _tmp/
+README.html
+

@@ -1,6 +1,7 @@
 {
 	"folders": [
 		{ "path": "." },
+		{ "path": "content" },
 	],
 	"settings": {
 		"files.exclude": {
@@ -26,6 +27,7 @@
 		"less.compile": {
 			"main": "custom.less"
 		},
+		"workbench.colorTheme": "Solarized Light",
 
 	},	
 }
