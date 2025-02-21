@@ -85,8 +85,9 @@ printf "  |  %s\n" $DDTEST | tee -a $R
 
 DDOUT=$( $DDTEST 2>&1 )
 DDRV=$?
+echo "dd test returned $DDRV"
 
-if ! (( DDRV = 0 )); then
+if ! (( DDRV == 0 )); then
     echo -e $DDOUT | tee -a $R
     echo -e "** Some dd options are not available **\n" | tee -a $R
     ask_to_continue
