@@ -17,41 +17,50 @@ echo -e "\nTesting $TESTPATH\n"
 cd $TESTPATH
 df -P $TESTPATH
 
-ID=$(df -P $TESTPATH | tail -1 | sed -E -e 's~ *(/[^ ]*) .*~\1~' -e 's~/dev/~~' -e 's~/~~g')
+ID=$(df -P $TESTPATH | tail -1 | sed -E -e 's~ *(/[^ ]*) .*~\1~')
+# -e 's~/dev/~~' -e 's~/~~g')
 MACHINE=$(hostname -s)
 
 
 function dinfo() {
     local D=$1
     local T=$2
-    diskutil info "$1" | grep "$T" | sed "s~.*: *~~" | cut -w -f1
+    diskutil info "$1" | grep "$T" | sed "s~.*: *~~" | cut -d' ' -f1
 }
 
-dloc=$(dinfo $ID "Location")
-dname=$(dinfo $ID "Volume Name")
-duuid=$(dinfo $ID "Volume UUID" | tail -c 4)
+dloc=$(dinfo $ID "Location"); printf "loc: [%s]\n" $dloc
+dname=$(dinfo $ID "Volume Name"); printf "name: [%s]\n" $dname
+duuid=$(dinfo $ID "Volume UUID" | tail -c 4); printf "uuid: [%s]\n" $duuid
+dproto=$(dinfo $ID "Protocol"); printf "proto: [%s]\n" $dproto
 
-R=$(echo "$R-$MACHINE-$dloc-$dname-$duuid-$ID" | tr "/?:. '\"" "-")
+ID=$(echo $ID | sed -E -e 's~/dev/~~' -e 's~/~~g')
+
+R=$(echo "$R-$MACHINE-$dloc-$dname-$dproto-$duuid-$ID" | tr -d "\n\"" |  tr "/?:. '\"" "-")
 R="$TESTPATH/$R.md"
 echo -e "\nReport File: $R\n"
 
 printf "# Drive Test: %s on " $ID | tee $R;
 uname -mnp | tee -a $R
-printf "\n\n" tee -a $R
+printf "\n\n" | tee -a $R
 
-diskutil info $ID | grep -Ei "(Volume UUID:)|(Name:)|(Disk Size:)|(State:)|(Point:)|(Location:)" | sed -E "s~(: [^\(-]*)[\(-].*~\1…~" | tee -a $R
+diskutil info $ID | grep -Ei "(Volume UUID:)|(Name:)|(Protocol:)|(Disk Size:)|(State:)|(Point:)|(Location:)" | sed -E "s~(: [^\(-]*)[\(-].*~\1…~" | tee -a $R
 printf "\n" tee -a $R
 
 
-printf "Continue with write/read test? (y/n)?  "
-read -k1 -s REPLY
-echo "  $REPLY"
+function ask_to_continue() {
 
-echo
-if ! [[ $REPLY =~ ^[Yy]$ ]]; then
-    echo -e "\nCancelled\n"
-    exit 1
-fi    
+    local REPLY=""
+    printf "Continue with write/read test? (y/n)?  "
+    read -k1 -s REPLY 
+    echo "  $REPLY"
+
+    if ! [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo -e "\nCancelled\n"
+        exit 1
+    fi
+}
+
+ask_to_continue    
 
 function B2Mb() {
     local B="$1"
@@ -68,7 +77,25 @@ function readresult() {
     echo $Mbps
 }
 
-DD_OPTS=(bs=$B count=$N iflag=direct oflag=direct)
+DD_OPTS=(bs=$B iflag=direct oflag=direct)
+echo -e "\ndd test\n" | tee -a $R
+DDTEST=(dd if=/dev/zero of=/dev/null count=1)
+DDTEST+=( $DD_OPTS )
+printf "  |  %s\n" $DDTEST | tee -a $R
+
+DDOUT=$( $DDTEST 2>&1 )
+DDRV=$?
+
+if ! (( DDRV = 0 )); then
+    echo -e $DDOUT | tee -a $R
+    echo -e "** Some dd options are not available **\n" | tee -a $R
+    ask_to_continue
+    DD_OPTS=(bs=$B)
+else
+    echo -e "dd test passed" | tee -a $R
+fi
+ 
+DD_OPTS+=( "count=$N" )
 
 DIR="Write"; R2="$T.w"; echo "## $DIR"
 echo -e "\nWriting to $TESTPATH/$D …\n"
@@ -80,38 +107,9 @@ echo -e "\Reading from $TESTPATH/$D …\n"
 dd if=$TESTPATH/$D of=/dev/null $DD_OPTS  2>&1 | tee $R2
 echo ""
 
-#ls -la $TESTPATH/$D
 
-# write random bytes to make sure data is accessed by read
-#echo -e "\nWriting random bytes …\n"
-#for ((i = 0 ; i < $((N/8)); i+=4 )); do
-#    dd if=/dev/random bs=4 of=$TESTPATH/$D oseek=$i count=3 conv=notrunc >/dev/null 2</dev/null
-#done
-#ls -la $TESTPATH/$D
-# 
-#echo -e "\n--- $TESTPATH/$D Random Header---\n"
-#hexdump -n 512 $TESTPATH/$D
-#shasum $TESTPATH/$D
-#echo ""
-
-#cp $TESTPATH/$D $HOME/
-#rm $TESTPATH/$D
-#dd if=/dev/random bs=$B of=$TESTPATH/$D count=2 2>&1
-#shasum $TESTPATH/$D
-##cp $HOME/$D $TESTPATH/
-#rm $HOME/$D
-#shasum $TESTPATH/$D
-
-
-#DIR="Read"; R2="$T.r"; echo "## $DIR"
-#echo -e "\nWriting random bytes …\n"
-#for ((i = 0 ; i < $((N/4)); i+=4 )); do
-#    dd if=/dev/random bs=$B of=$TESTPATH/$D oseek=$i count=1 conv=notrunc >/dev/null 2</dev/null
-#done
-#ls -la $TESTPATH/$D
-#echo -e "\nReading from $TESTPATH/$D …\n"
-##dd if="$D" bs=$B of=/dev/null count=$N 2>&1 | tee $R2
-#echo ""
+printf "\ndd options used:\n" | tee -a $R
+printf "    %s\n" $DD_OPTS | tee -a $R
 
 echo "" | tee -a $R
 DIR="Write"; R2="$T.w";
