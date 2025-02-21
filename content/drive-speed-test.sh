@@ -50,7 +50,7 @@ printf "\n" tee -a $R
 function ask_to_continue() {
 
     local REPLY=""
-    printf "Continue with write/read test? (y/n)?  "
+    printf "    --> Continue with write/read test? (y/n)?  "
     read -k1 -s REPLY 
     echo "  $REPLY"
 
@@ -88,12 +88,12 @@ DDRV=$?
 echo "dd test returned $DDRV"
 
 if ! (( DDRV == 0 )); then
-    echo -e $DDOUT | tee -a $R
-    echo -e "** Some dd options are not available **\n" | tee -a $R
+    echo -e "\n$DDOUT" | tee -a $R
+    echo -e "\n ***  WARNING: Some dd options are not available  ***\n" | tee -a $R
     ask_to_continue
     DD_OPTS=(bs=$B)
 else
-    echo -e "dd test passed" | tee -a $R
+    echo -e "dd test passed"
 fi
  
 DD_OPTS+=( "count=$N" )
