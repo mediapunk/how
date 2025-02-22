@@ -4,23 +4,13 @@ T=".drive-test"; R="drive-test"
 RNDID=$(openssl rand -base64 10 | tr -d /+= | head -c 5)
 D="$T-$RNDID.data"
 
-rm .drive-test*.data
-rm .drive-test*
+setopt nullglob
+rm .drive-test*.data 2>/dev/null
+rm .drive-test* 2>/dev/null
 
 B=512k; N=512;
 
 TESTPATH=${1:-"/please/supply/path"}
-
-# Get the drive identifier for the current directory
-echo -e "\nTesting $TESTPATH\n"
-
-cd $TESTPATH
-df -P $TESTPATH
-
-ID=$(df -P $TESTPATH | tail -1 | sed -E -e 's~ *(/[^ ]*) .*~\1~')
-# -e 's~/dev/~~' -e 's~/~~g')
-MACHINE=$(hostname -s)
-
 
 function dinfo() {
     local D=$1
@@ -28,24 +18,46 @@ function dinfo() {
     diskutil info "$1" | grep "$T" | sed "s~.*: *~~" | cut -d' ' -f1
 }
 
-dloc=$(dinfo $ID "Location"); printf "loc: [%s]\n" $dloc
-dname=$(dinfo $ID "Volume Name"); printf "name: [%s]\n" $dname
-duuid=$(dinfo $ID "Volume UUID" | tail -c 4); printf "uuid: [%s]\n" $duuid
-dproto=$(dinfo $ID "Protocol"); printf "proto: [%s]\n" $dproto
+# Get the drive identifier for the current directory
+echo -e "\nTesting drive for path: $TESTPATH\n"
+
+cd $TESTPATH
+df -P $TESTPATH
+
+ID=$(df -P $TESTPATH | tail -1 | sed -E -e 's~ *(/[^ ]*) .*~\1~')
+ID=$(echo $ID | sed -E -e 's~/dev/~~' -e 's~/~~g')
+# diskutil info "$ID"
+
+
+echo "Device ID: $ID"
+PHYSICAL=$(dinfo $ID "Physical Store"); PHYSICAL=${PHYSICAL:-$ID}
+echo "Physical Device ID: $PHYSICAL"
+DISK=$(echo "$PHYSICAL" | sed -E -e 's~([^0-9]+[0-9]+)([^0-9]+[0-9]+)~\1~' )
+echo ""
+iostat -c1 $DISK
+echo ""
+
+MACHINE=$(hostname -s)
+
+
+dloc=$(dinfo $ID "Location"  | tr -d "\n\""); printf "loc: [%s]\n" $dloc
+dname=$(dinfo $ID "Volume Name"  | tr -d "\n\""); printf "name: [%s]\n" $dname
+duuid=$(dinfo $ID "Volume UUID" | tr -d "\n\"" | tail -c 4); printf "uuid: [%s]\n" $duuid
+dproto=$(dinfo $ID "Protocol" | tr -d "\n\""); printf "proto: [%s]\n" $dproto
 
 ID=$(echo $ID | sed -E -e 's~/dev/~~' -e 's~/~~g')
 
-R=$(echo "$R-$MACHINE-$dloc-$dname-$dproto-$duuid-$ID" | tr -d "\n\"" |  tr "/?:. '\"" "-")
+
+R=$(echo "$R-$MACHINE-$dloc-$dname-$dproto-$duuid-$ID" |  tr "/?:. '\"" "-")
 R="$TESTPATH/$R.md"
 echo -e "\nReport File: $R\n"
 
-printf "# Drive Test: %s on " $ID | tee $R;
-uname -mnp | tee -a $R
-printf "\n\n" | tee -a $R
+printf "# Drive Test: %s (%s on %s)\n\n" "$dname" "$dloc" "$MACHINE" | tee $R;
 
 diskutil info $ID | grep -Ei "(Volume UUID:)|(Name:)|(Protocol:)|(Disk Size:)|(State:)|(Point:)|(Location:)" | sed -E "s~(: [^\(-]*)[\(-].*~\1…~" | tee -a $R
 printf "\n" tee -a $R
 
+iostat $PHYSICAL
 
 function ask_to_continue() {
 
@@ -85,11 +97,10 @@ printf "  |  %s\n" $DDTEST | tee -a $R
 
 DDOUT=$( $DDTEST 2>&1 )
 DDRV=$?
-echo "dd test returned $DDRV"
 
 if ! (( DDRV == 0 )); then
-    echo -e "\n$DDOUT" | tee -a $R
-    echo -e "\n ***  WARNING: Some dd options are not available  ***\n" | tee -a $R
+    echo -e "\nTest returned with error code $DDRV: $DDOUT" | tee -a $R
+    echo -e "\n ***  WARNING: dd test failed ***\n" | tee -a $R
     ask_to_continue
     DD_OPTS=(bs=$B)
 else
