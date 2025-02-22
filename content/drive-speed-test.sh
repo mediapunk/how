@@ -47,9 +47,14 @@ dproto=$(dinfo $ID "Protocol" | tr -d "\n\""); printf "proto: [%s]\n" $dproto
 
 ID=$(echo $ID | sed -E -e 's~/dev/~~' -e 's~/~~g')
 
-
-R=$(echo "$R-$MACHINE-$dloc-$dname-$dproto-$duuid-$ID" |  tr "/?:. '\"" "-")
-R="$TESTPATH/$R.md"
+R = "$TESTPATH/$R"
+if [[ "$dloc" =~ "^External" ]]; then
+    R="$R-$dname-$dloc-$dproto-$duuid-$ID"
+else
+    R="$R-$MACHINE-$dloc-$dname-$dproto-$duuid-$ID"
+fi
+R=$(echo "$R" |  tr "/?:. '\"" "-")
+R="$R.md"
 echo -e "\nReport File: $R\n"
 
 printf "# Drive Test: %s (%s on %s)\n\n" "$dname" "$dloc" "$MACHINE" | tee $R;
