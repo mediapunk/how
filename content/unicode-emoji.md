@@ -1,8 +1,80 @@
 
 
+#Shade0='░'
 
-:warning:
-⚠
+# 5 shade characters
+Shade4=(' ','░','▒','▓','█')
+
+nd not found: ▓▓▓▓░░░░░░░░
+jellyfish% ▉▉▉▉░░░░░░      
+zsh: command not found: ▉▉▉▉░░░░░░
+jellyfish% ████▉░░ 
+zsh: command not found: ████▉░░
+jellyfish% ████▉░░▏         
+zsh: command not found: ████▉░░▏
+jellyfish% ████▏   
+zsh: command not found: ████▏
+jellyfish% ███▉▏
+zsh: command not found: ███▉▏
+jellyfish% ▓▓▓▓▊░░░░░
+zsh: command not found: ▓▓▓▓▊░░░░░
+jellyfish% ▒▒▒▒▒▊░░░░
+zsh: command not found: ▒▒▒▒▒▊░░░░
+jellyfish% ▒▒▒▒▒░░░  
+zsh: command not found: ▒▒▒▒▒░░░
+
+SH0='-' #Shade4[0]
+SH1=Shade4[1]
+
+# 9 block characters, left aligned, 0/8 to 8/8
+BL8=(' ','▏','▎','▍','▌','▋','▊','▉','█')
+
+# ◍
+# ●
+# ◑
+# ◯
+# ∘
+# ·
+
+CIR =(' ', '·', '∘', '◯', '◑', '●', '◍')
+
+#CIR =('◌','◯','◍','●')
+
+
+
+### Stars
+
+    ★
+
+### Circles or Bullets
+
+    ⚫ ◯ ◌ ◯ ◑ ◍ ● ◍ ● ◎ ◯ ◌ ∘ • ◦ ·
+
+
+◍ ● ◑ ◯ ∘ ·
+
+    ·•◦∘
+-- –– ——
+## ◯ ◌ ◍ ●
+##  ◌ ◍ ●
+
+
+### Size Changes with ◌ ◯
+Some circles may change size depending on the font, and what precedes them
+
+| Starting Glyph + | ◍ ● ◎ ◯ ◌ • ◦ · | |
+|-| -:|-|
+| ◯ | ◯ ◍ ● ◎ ◯ ◌ • ◦ · | Larger: ◎ ◯ ◌ |
+| ◌ | ◌ ◍ ● ◎ ◯ ◌ • ◦ · |
+| ◎ | ◎ ◍ ● ◎ ◯ ◌ • ◦ · |
+| • | • ◍ ● ◎ ◯ ◌ • ◦ · | Smaller: ◎ ◯ ◌ |
+| • | • ● ◎ ◯ ◌ • ◦ · | Larger: ◎ ◯ ◌ |
+| ● ◍ | ● ◍ ◍ ● ◎ ◯ ◌ • ◦ · |
+| ● ◯ | ● ◯ ◍ ● ◎ ◯ ◌ • ◦ · |
+| ◍ | ◍ ◍ ● ◎ ◯ ◌ • ◦ · |
+
+
+## :warning: ⚠
 
 ✓✗☐☒🗹
 
