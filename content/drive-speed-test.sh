@@ -8,9 +8,11 @@ setopt nullglob
 rm .drive-test*.data 2>/dev/null
 rm .drive-test* 2>/dev/null
 
-B=512k; N=512;
+B=1024k; N=1024;
 
 TESTPATH=${1:-"/please/supply/path"}
+
+function hr() { local N=20; local LINE=$(printf "%${N}s" " " | tr " " "${1}"); printf -- "\n %s \n\n" "${LINE}"; }
 
 function dinfo() {
     local D=$1
@@ -24,45 +26,104 @@ echo -e "\nTesting drive for path: $TESTPATH\n"
 cd $TESTPATH
 df -P $TESTPATH
 
-ID=$(df -P $TESTPATH | tail -1 | sed -E -e 's~ *(/[^ ]*) .*~\1~')
-ID=$(echo $ID | sed -E -e 's~/dev/~~' -e 's~/~~g')
-# diskutil info "$ID"
+
+hr "-"
+VID=$(df -P $TESTPATH | tail -1 | sed -E -e 's~ *(/[^ ]*) .*~\1~')
+VID=$(echo $VID | sed -E -e 's~/dev/~~' -e 's~/~~g')
+echo "  Virtual ID: $VID"
+VDISK=$(echo "$VID" | sed -E 's~([^0-9]+[0-9]+)([^0-9]+[0-9]+)~\1~')
+echo "  Virtual Disk: $VDISK"
+
+PHYSID=$(dinfo $VID "Physical Store"); PHYSID=${PHYSID:-$VID}
+echo "  Physical ID: $PHYSID"
+PHYSDISK=$(echo "$PHYSID" | sed -E -e 's~([^0-9]+[0-9]+)([^0-9]+[0-9]+)~\1~' )
+echo "  Physical Disk: $PHYSDISK"
+hr "^"
+
+# Only Physical Disks for iostat
+#iostat -c1 $VID
+#iostat -c1 $VDISK
+#iostat -c1 $PHYSID
+iostat -c1 $PHYSDISK
 
 
-echo "Device ID: $ID"
-PHYSICAL=$(dinfo $ID "Physical Store"); PHYSICAL=${PHYSICAL:-$ID}
-echo "Physical Device ID: $PHYSICAL"
-DISK=$(echo "$PHYSICAL" | sed -E -e 's~([^0-9]+[0-9]+)([^0-9]+[0-9]+)~\1~' )
-echo ""
-iostat -c1 $DISK
-echo ""
+hr "~"
 
 MACHINE=$(hostname -s)
 
+#hr "="
+#diskutil info "$VID" | grep -Ei "(num)|(id)|(device)|(name)"
+#hr " "
+#diskutil info "$VDISK" | grep -Ei "(num)|(id)|(device)|(name)"
+#hr "-"
+#diskutil info "$PHYSID" | grep -Ei "(num)|(id)|(device)|(name)"
+#hr " "
+#diskutil info "$PHYSDISK" | grep -Ei "(num)|(id)|(device)|(name)"
+#hr "="
 
-dloc=$(dinfo $ID "Location"  | tr -d "\n\""); printf "loc: [%s]\n" $dloc
-dname=$(dinfo $ID "Volume Name"  | tr -d "\n\""); printf "name: [%s]\n" $dname
-duuid=$(dinfo $ID "Volume UUID" | tr -d "\n\"" | tail -c 4); printf "uuid: [%s]\n" $duuid
-dproto=$(dinfo $ID "Protocol" | tr -d "\n\""); printf "proto: [%s]\n" $dproto
+function diskprop() { local PROP="${2}"; diskutil info "${1}" | grep -Ei "[^ ] ${PROP}:" | grep -vi "no[t ] .*(no[t ]" | sed -E 's~[^:]*: *~~'; };
+#export -f diskprop
 
-ID=$(echo $ID | sed -E -e 's~/dev/~~' -e 's~/~~g')
+#VOLNAME="$(diskprop "$VID" "name")"
+#DEVICENAME="$(diskprop "$VDISK" "name")"
 
-R = "$TESTPATH/$R"
+#echo "DEVICE/VOLUME: --> $DEVICENAME / $VOLNAME"
+#hr "^"
+
+#NAMES=($(diskprop $VID "name"; diskprop $VDISK "name"; diskprop $PHYSID "name"; diskprop $PHYSDISK "name"))
+#printf -- "%s\n" $NAMES | uniq
+
+UUIDS="$(diskprop $VID "uuid"; diskprop $VDISK "uuid"; diskprop $PHYSID "uuid"; diskprop $PHYSDISK "uuid")"
+#echo "$UUIDS"
+UUIDS=($(echo "$UUIDS" | uniq))
+#echo "$UUIDS"
+UUID_STR=$(printf -- "%.5s-" $UUIDS | sed -E 's~\-$~~')
+echo "UUIDS: $UUID_STR"
+
+hr "="
+ 
+
+#SP_STORAGE_ID=$(system_profiler -detailLevel full -json SPStorageDataType | yq -P ".[][] | select(.bsd_name==\"$VID\")")
+#echo "$SP_STORAGE_ID" | yq -P
+
+#hr "v"
+#PROTOCOL=$(echo "$SP_STORAGE_ID" | yq -P ".[].protocol")
+#echo "Protocol: $PROTOCOL"
+#hr "^"
+
+#DATATYPE="SPNVMeDataType"
+#if [[ "$PROTOCOL" == "USB" ]]; then DATATYPE="SPUSBDataType"; fi
+#if [[ "$PROTOCOL" == "PCI-Express" ]]; then DATATYPE="SPNVMeDataType" ; fi
+
+
+#hr "#"
+#TYPE_ITEMS=$(system_profiler -json "$DATATYPE" 2>/dev/null | yq -P ".[][] | select((._items))")
+#echo "$TYPE_ITEMS" | yq -P; hr "^"
+#DISK_ITEMS=$(echo "$TYPE_ITEMS" | yq -P ".[] | select(.[].bsd_name==\"${PHYSDISK}\")")
+#DISK_ITEMS=$(echo "$TYPE_ITEMS" | yq -P "._items[] | select(.[].bsd_name==\"${PHYSDISK}\")")
+#echo "$DISK_ITEMS" | yq -P; hr "@"
+#CONNECTION=$(echo "$DISK_ITEMS" | yq -P ".[]._name")
+#echo "Connected to: $CONNECTION"
+#hr ":"
+
+
+dloc=$(dinfo $VID "Location"  | tr -d "\n\""); printf "loc: [%s]\n" $dloc
+dname=$(dinfo $VID "Volume Name"  | tr -d "\n\""); printf "name: [%s]\n" $dname
+duuid="$UUID_STR"
+#(dinfo $VID "Volume UUID" | tr -d "\n\"" | tail -c 4); printf "uuid: [%s]\n" $duuid
+dproto=$(dinfo $VID "Protocol" | tr -d "\n\""); printf "proto: [%s]\n" $dproto
+
+
 if [[ "$dloc" =~ "^External" ]]; then
-    R="$R-$dname-$dloc-$dproto-$duuid-$ID"
+    R="$R-$dname-$dloc-$dproto-$duuid"
 else
-    R="$R-$MACHINE-$dloc-$dname-$dproto-$duuid-$ID"
+    R="$R-$MACHINE-$dloc-$dname-$dproto-$duuid"
 fi
 R=$(echo "$R" |  tr "/?:. '\"" "-")
-R="$R.md"
+R="$TESTPATH/$R.md"
+
+hr "_"
 echo -e "\nReport File: $R\n"
-
-printf "# Drive Test: %s (%s on %s)\n\n" "$dname" "$dloc" "$MACHINE" | tee $R;
-
-diskutil info $ID | grep -Ei "(Volume UUID:)|(Name:)|(Protocol:)|(Disk Size:)|(State:)|(Point:)|(Location:)" | sed -E "s~(: [^\(-]*)[\(-].*~\1…~" | tee -a $R
-printf "\n" tee -a $R
-
-iostat $PHYSICAL
 
 function ask_to_continue() {
 
@@ -78,6 +139,14 @@ function ask_to_continue() {
 }
 
 ask_to_continue    
+
+
+printf "# Drive Test: %s (%s on %s)\n\n" "$dname" "$dloc" "$MACHINE" | tee $R;
+
+diskutil info $VID | grep -Ei "(Volume UUID:)|(Name:)|(Protocol:)|(Disk Size:)|(State:)|(Point:)|(Location:)" | sed -E "s~(: [^\(-]*)[\(-].*~\1…~" | tee -a "$R"
+printf "\n" tee -a "$R"
+
+
 
 function B2Mb() {
     local B="$1"
